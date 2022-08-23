@@ -1,33 +1,33 @@
 import os
+import pyheif
 from PIL import Image
-from wand.image import Image as ImageWand
 
-
-def commom_images_to_jpg(f, path, origin_name):
-    full_path = path + '/' + f
-    
+def commom_images_to_jpg(full_path, destiny):
     img = Image.open(full_path)
     
     rgb_img = img.convert('RGB')
     
-    rgb_img.save('../converted_images/' + origin_name + '.jpg')
+    rgb_img.save(destiny)
 
 
-def heic_images_to_jpg(f, path, origin_name):
-    full_path = path + '/' + f
+def heic_images_to_jpg(full_path, destiny):
+    heif_image = pyheif.read(full_path)
 
-    destiny = '../converted_images/' + origin_name + '.JPG'
+    img = Image.frombytes(
+        heif_image.mode, 
+        heif_image.size, 
+        heif_image.data,
+        "raw",
+        heif_image.mode,
+        heif_image.stride,
+    )
 
-    print(destiny)
-    img = ImageWand(filename=full_path)
-    img.format='jpg'
-    img.save(filename=destiny)
-    img.close()
+    img.save(destiny, 'JPEG')
 
 
 
 def main():
-    print('Type the path from here you want to convert the image files to JPG:')
+    print('Type the path from here you want to convert the image files to JPG: ')
   
     try:
         path = str(input())
@@ -37,12 +37,18 @@ def main():
         os.mkdir('../converted_images')
 
         for f in files:
+            full_path = path + '/' + f
+        
+            if (not os.path.isfile(full_path)): continue
+            
             origin_name = f.split('.')[0]
+
+            destiny = '../converted_images/' + origin_name + '.jpg'
             
             if (not f.endswith('.heic')):
-                commom_images_to_jpg(f, path, origin_name)
+                commom_images_to_jpg(full_path, destiny)
             else:
-                heic_images_to_jpg(f, path, origin_name)
+                heic_images_to_jpg(full_path, destiny)
 
         print('Conversion completed successfully!')
     except Exception as err:
@@ -51,5 +57,3 @@ def main():
 
 
 main()
-
-# to install the dependencies: pip install -r requirements.txt
