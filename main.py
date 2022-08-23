@@ -34,8 +34,10 @@ def main():
 
         files = os.listdir(path)
 
-        os.mkdir('../converted_images')
+        os.mkdir(path + '/converted_images')
 
+        print("I'm working, please wait . . .")
+        
         for f in files:
             full_path = path + '/' + f
         
@@ -43,7 +45,7 @@ def main():
             
             origin_name = f.split('.')[0]
 
-            destiny = '../converted_images/' + origin_name + '.jpg'
+            destiny = path + '/converted_images/' + origin_name + '.jpg'
             
             if (not f.endswith('.heic')):
                 commom_images_to_jpg(full_path, destiny)
