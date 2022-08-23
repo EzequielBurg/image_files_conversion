@@ -16,6 +16,6 @@ after, run:
 
 and type the path of directory you want to convert the images to JPG.
 
-The converted images will be in ../converted_images .
+The converted images will be in TYPED_PATH/converted_images .
 
     
