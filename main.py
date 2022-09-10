@@ -41,7 +41,7 @@ def main():
         for f in files:
             full_path = path + '/' + f
         
-            if (not os.path.isfile(full_path)): continue
+            if (not os.path.isfile(full_path) or f.endswith('.mp4')): continue
             
             origin_name = f.split('.')[0]
 
